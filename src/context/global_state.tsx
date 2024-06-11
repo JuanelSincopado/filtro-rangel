@@ -1,73 +1,73 @@
-import { useState } from 'react'
-import supabase from '../config/supabase'
-import State from './interface_state'
-import GlobalContext from './global_context'
+import { useState } from "react";
+import supabase from "../config/supabase";
+import GlobalContext from "./global_context";
+import State from "./interface_state";
 
 interface Props {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 const GlobalState = ({ children }: Props) => {
-  const [data, setData] = useState<State['data']>([])
-  const [filter, setFilter] = useState<State['filter']>([])
+  const [data, setData] = useState<State["data"]>([]);
+  const [filter, setFilter] = useState<State["filter"]>([]);
 
-  const [loading, setLoading] = useState<State['loading']>(false)
+  const [loading, setLoading] = useState<State["loading"]>(false);
 
   const getData = async () => {
-    setLoading(true)
+    setLoading(true);
 
     try {
-      const response = await supabase.from('data').select('*')
+      const response = await supabase.from("data").select("*");
 
       if (response.error) {
-        throw response.error
+        throw response.error;
       }
 
-      setData(response.data)
-      setFilter(response.data)
+      setData(response.data);
+      setFilter(response.data);
 
-      setLoading(false)
+      setLoading(false);
     } catch (error) {
-      console.error(error)
-      setLoading(false)
+      console.error(error);
+      setLoading(false);
     }
-  }
+  };
 
   const searchByCups = (value: string) => {
-    if (value === '') {
-      setFilter(data)
+    if (value === "") {
+      setFilter(data);
     } else {
       const result = data.filter((item) => {
-        return item.cups_norma.toLowerCase().includes(value.toLowerCase())
-      })
+        return item.cups_norma.toLowerCase().includes(value.toLowerCase());
+      });
 
-      setFilter(result)
+      setFilter(result);
     }
-  }
+  };
 
   const searchByDescription = (value: string) => {
-    if (value === '') {
-      setFilter(data)
+    if (value === "") {
+      setFilter(data);
     } else {
       const result = data.filter((item) => {
-        return item.descripcion.toLowerCase().includes(value.toLowerCase())
-      })
+        return item.descripcion.toLowerCase().includes(value.toLowerCase());
+      });
 
-      setFilter(result)
+      setFilter(result);
     }
-  }
+  };
 
   const searchByObservation = (value: string) => {
-    if (value === '') {
-      setFilter(data)
+    if (value === "") {
+      setFilter(data);
     } else {
       const result = data.filter((item) => {
-        return item.observaciones.toLowerCase().includes(value.toLowerCase())
-      })
+        return item.observaciones.toLowerCase().includes(value.toLowerCase());
+      });
 
-      setFilter(result)
+      setFilter(result);
     }
-  }
+  };
 
   return (
     <GlobalContext.Provider
@@ -83,7 +83,7 @@ const GlobalState = ({ children }: Props) => {
     >
       {children}
     </GlobalContext.Provider>
-  )
-}
+  );
+};
 
-export default GlobalState
+export default GlobalState;
